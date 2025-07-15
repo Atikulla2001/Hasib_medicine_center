@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
 import { Link } from 'react-router'
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const Registration = () => {
+
+  const auth = getAuth();
 
   const [userInfo, setUserInfo] = useState({
     Username: "",
@@ -55,7 +58,7 @@ const Registration = () => {
 
 
     // validation //
-    
+
     e.preventDefault();
     if (!userInfo.Username || !userInfo.Emailaddress || !userInfo.Password || !userInfo.Confrimpassword) {
       toast('Please fill out all fields.');
@@ -76,8 +79,31 @@ const Registration = () => {
       toast.error('Password and Confirm Password do not match.');
       return;
     }
+    else {
+      createUserWithEmailAndPassword(auth, userInfo.Emailaddress, userInfo.Password, userInfo.Confrimpassword)
+        .then((userCredential) => {
+          // Signed up 
+          const user = userCredential.user;
+          // ...
+          console.log(user)
+          toast.success('Registration successful!');
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ..
+          if (errorCode.includes("auth/email-already-in-use"))
+            toast.error("Email already in use")
+          setUserInfo({
+            Username: "",
+            Emailaddress: "",
+            Password: "",
+            Confrimpassword: "",
+          })
+        });
+    }
 
-    toast.success('Registration successful!');
+
 
 
   };
@@ -120,6 +146,7 @@ const Registration = () => {
               </svg>
             </span>
             <input onChange={handleusername}
+              value={userInfo.Username}
               type="text"
               className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               placeholder="Username"
@@ -144,6 +171,7 @@ const Registration = () => {
               </svg>
             </span>
             <input onChange={handleemail}
+              value={userInfo.Emailaddress}
               type="email"
               className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               placeholder="Email address"
@@ -168,6 +196,7 @@ const Registration = () => {
               </svg>
             </span>
             <input onChange={handlepassword}
+              value={userInfo.Password}
               type="password"
               className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               placeholder="Password"
@@ -192,6 +221,7 @@ const Registration = () => {
               </svg>
             </span>
             <input onChange={handleconfrimpassword}
+              value={userInfo.Confrimpassword}
               type="password"
               className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               placeholder="Confirm Password"
