@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
 import { Link } from 'react-router'
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
+import { app, auth } from '../firebase.config';
+import { useNavigate } from 'react-router';
 
 const Registration = () => {
 
-  const auth = getAuth();
 
   const [userInfo, setUserInfo] = useState({
     Username: "",
@@ -14,7 +15,9 @@ const Registration = () => {
     Confrimpassword: "",
   });
 
-  console.log(userInfo)
+  
+
+  const navigate = useNavigate()
 
 
   const handleusername = (e) => {
@@ -49,6 +52,7 @@ const Registration = () => {
   // button function start // 
 
   const handlesubmit = (e) => {
+    e.preventDefault();
 
     // password regex email regex code //
     const { Emailaddress, Password, Confrimpassword } = userInfo;
@@ -59,7 +63,7 @@ const Registration = () => {
 
     // validation //
 
-    e.preventDefault();
+
     if (!userInfo.Username || !userInfo.Emailaddress || !userInfo.Password || !userInfo.Confrimpassword) {
       toast('Please fill out all fields.');
       return;
@@ -82,11 +86,31 @@ const Registration = () => {
     else {
       createUserWithEmailAndPassword(auth, userInfo.Emailaddress, userInfo.Password, userInfo.Confrimpassword)
         .then((userCredential) => {
+          sendEmailVerification(auth.currentUser)
+            .then(() => {
+              // Email verification sent!
+              updateProfile(auth.currentUser, {
+                displayName: userInfo.Username
+
+              }).then(() => {
+                const user = userCredential.user;
+                console.log(user)
+                toast.success('Registration successful!');
+                setTimeout(() => {
+                  navigate("/login");
+                }, 1500);
+
+
+              }).catch((error) => {
+                // An error occurred
+                // ...
+                
+              });
+
+            });
           // Signed up 
-          const user = userCredential.user;
-          // ...
-          console.log(user)
-          toast.success('Registration successful!');
+
+
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -102,7 +126,6 @@ const Registration = () => {
           })
         });
     }
-
 
 
 
@@ -174,7 +197,7 @@ const Registration = () => {
               value={userInfo.Emailaddress}
               type="email"
               className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              placeholder="Email address"
+              placeholder="user@example.com"
             />
           </div>
 
@@ -199,7 +222,7 @@ const Registration = () => {
               value={userInfo.Password}
               type="password"
               className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              placeholder="Password"
+              placeholder="Password 8+ chars, A-Z, a-z, 0-9, @#$%"
             />
           </div>
 
@@ -224,7 +247,7 @@ const Registration = () => {
               value={userInfo.Confrimpassword}
               type="password"
               className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              placeholder="Confirm Password"
+              placeholder="Confirm Password 8+ chars, A-Z, a-z, 0-9, @#$%"
             />
           </div>
 

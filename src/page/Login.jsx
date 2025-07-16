@@ -1,12 +1,118 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router'
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../firebase.config';
+import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router';
+
 
 const Login = () => {
+
+    const [userInfo, setUserInfo] = useState({
+        Username: "",
+        Emailaddress: "",
+        Password: "",
+    });
+
+    console.log(userInfo)
+
+    const navigate = useNavigate()
+
+    const handleemail = (e) => {
+        setUserInfo((prev) => {
+            return { ...prev, Emailaddress: e.target.value }
+        })
+    };
+
+    const handlepassword = (e) => {
+        setUserInfo((prev) => {
+            return { ...prev, Password: e.target.value }
+        })
+    };
+
+
+
+
+    // button function start // 
+
+    const handlelogin = () => {
+
+
+        // password regex email regex code //
+        const { Emailaddress, Password } = userInfo;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        // password regex code //
+
+
+        // validation //
+
+
+        if (!userInfo.Emailaddress || !userInfo.Password) {
+            toast('Please fill out all fields.');
+            return;
+        }
+
+        if (!emailRegex.test(Emailaddress)) {
+            toast.error('Please enter a valid email address.');
+            return;
+        }
+
+        if (!passwordRegex.test(Password)) {
+            toast.error('Password should be at least 8 characters and include uppercase, lowercase, number, and special character.');
+            return;
+        }
+
+        if (userInfo.Emailaddress && userInfo.Password) {
+            signInWithEmailAndPassword(auth, userInfo.Emailaddress, userInfo.Password)
+                .then((userCredential) => {
+                    // Signed in 
+                    const user = userCredential.user;
+                    const name = user.displayName;
+                    // ...
+                    console.log(user)
+                    if (user.emailVerified) {
+                        toast.success(`Login successful! Welcome, ${name || "User"}!`);
+                        setTimeout(() => {
+                            navigate("/home");
+                        }, 1500);
+                    }
+                    else {
+                        toast.error("Registration successful! Please check your email to verify your account.")
+                    }
+
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+
+                    console.log(errorCode)
+
+                    if (errorCode.includes("auth/invalid-credential"))
+                        toast.error("Invalid Email Or Password")
+                    setUserInfo({
+                        Emailaddress: "",
+                        Password: "",
+                    })
+                });
+        }
+
+
+    }
+
+
+    // button function end // 
+
+
+
     return (
         <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 lg:max-w-4xl">
-            
+            {/* <Toaster position="bottom-center"
+                reverseOrder={false} /> */}
+
+            <Toaster />
             <div className="w-full mx-auto px-6 py-20 md:px-8 lg:w-1/2">
-                
+
                 <p className="mt-3 text-xl text-center text-gray-600 dark:text-gray-200">
                     Welcome back!
                 </p>
@@ -55,7 +161,7 @@ const Login = () => {
                     >
                         Email Address
                     </label>
-                    <input
+                    <input onChange={handleemail}
                         id="LoggingEmailAddress"
                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
                         type="email"
@@ -76,14 +182,16 @@ const Login = () => {
                             Forget Password?
                         </a>
                     </div>
-                    <input
+                    <input onChange={handlepassword}
                         id="loggingPassword"
                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
                         type="password"
                     />
                 </div>
                 <div className="mt-6">
-                    <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+                    <button onClick={handlelogin}
+                        type='submit'
+                        className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
                         Login
                     </button>
                 </div>

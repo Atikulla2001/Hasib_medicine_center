@@ -13,8 +13,8 @@ import Registration from './page/Registration';
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home />
+    path: "/login",
+    element: <Login />
   },
   {
     path: "*",
@@ -25,8 +25,8 @@ const router = createBrowserRouter([
     element: <Registration />
   },
   {
-    path: "/login",
-    element: <Login />
+    path: "/home",
+    element: <Home />
   },
 ]);
 
