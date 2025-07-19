@@ -10,23 +10,36 @@ import Page_not_found from './page/Page_not_found';
 import Home from './page/Home';
 import Login from './page/Login';
 import Registration from './page/Registration';
+import Message from './page/Message';
+import Rootlayout from './component/Rootlayout';
 
 const router = createBrowserRouter([
   {
-    path: "/login",
-    element: <Login />
-  },
-  {
-    path: "*",
-    element: <Page_not_found />
-  },
-  {
-    path: "/registration",
-    element: <Registration />
-  },
-  {
-    path: "/home",
-    element: <Home />
+    path: "/",
+    Component: Rootlayout,
+    children: [
+      { index: true, Component: Home },
+      { path: "message", Component: Message },
+
+      {
+        path: "/login",
+        Component: Login,
+      },
+      {
+        path: "/registration",
+        Component: Registration,
+      },
+      // {
+      //   path: "/message",
+      //   Component: Message,
+      // },
+      {
+        path: "/page_not_found",
+        Component: Page_not_found,
+      },
+
+
+    ],
   },
 ]);
 

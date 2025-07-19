@@ -15,7 +15,7 @@ const Registration = () => {
     Confrimpassword: "",
   });
 
-  
+
 
   const navigate = useNavigate()
 
@@ -97,14 +97,14 @@ const Registration = () => {
                 console.log(user)
                 toast.success('Registration successful!');
                 setTimeout(() => {
-                  navigate("/login");
-                }, 1500);
+                  navigate("/");
+                }, 1000);
 
 
               }).catch((error) => {
                 // An error occurred
                 // ...
-                
+
               });
 
             });
@@ -143,113 +143,73 @@ const Registration = () => {
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
-        <Toaster position="bottom-center"
-          reverseOrder={false} />
+        <Toaster />
         <form onSubmit={handlesubmit}
           className="w-full max-w-md">
           <div className="flex justify-center mx-auto">
             <h2 className='font-Poppins'>Talk to me</h2>
           </div>
 
-          <div className="relative flex items-center mt-8">
-            <span className="absolute">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-            </span>
-            <input onChange={handleusername}
+          {/* Username */}
+          <div className="mt-6">
+            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+              Username
+            </label>
+            <input
+              name="Username"
+              onChange={handleusername}
               value={userInfo.Username}
               type="text"
-              className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              placeholder="Username"
+              placeholder="Enter your name"
+              className="block w-full py-3 px-4 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
           </div>
 
-          <div className="relative flex items-center mt-6">
-            <span className="absolute">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
-            </span>
-            <input onChange={handleemail}
+          {/* Email */}
+          <div className="mt-4">
+            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+              Email Address
+            </label>
+            <input
+              name="Emailaddress"
+              onChange={handleemail}
               value={userInfo.Emailaddress}
               type="email"
-              className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               placeholder="user@example.com"
+              className="block w-full py-3 px-4 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
           </div>
 
-          <div className="relative flex items-center mt-4">
-            <span className="absolute">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
-            </span>
-            <input onChange={handlepassword}
+          {/* Password */}
+          <div className="mt-4">
+            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+              Password
+            </label>
+            <input
+              name="Password"
+              onChange={handlepassword}
               value={userInfo.Password}
               type="password"
-              className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              placeholder="Password 8+ chars, A-Z, a-z, 0-9, @#$%"
+              placeholder="Minimum 8 chars, A-Z, a-z, 0-9, @#$%"
+              className="block w-full py-3 px-4 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
           </div>
 
-          <div className="relative flex items-center mt-4">
-            <span className="absolute">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
-            </span>
-            <input onChange={handleconfrimpassword}
+          {/* Confirm Password */}
+          <div className="mt-4">
+            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+              Confirm Password
+            </label>
+            <input
+              name="Confrimpassword"
+              onChange={handleconfrimpassword}
               value={userInfo.Confrimpassword}
               type="password"
-              className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              placeholder="Confirm Password 8+ chars, A-Z, a-z, 0-9, @#$%"
+              placeholder="Re-type your password"
+              className="block w-full py-3 px-4 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
           </div>
+
 
           <div className="mt-6">
 

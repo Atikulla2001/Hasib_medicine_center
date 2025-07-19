@@ -14,7 +14,7 @@ const Login = () => {
         Password: "",
     });
 
-    console.log(userInfo)
+    // console.log(userInfo)
 
     const navigate = useNavigate()
 
@@ -72,13 +72,13 @@ const Login = () => {
                     // ...
                     console.log(user)
                     if (user.emailVerified) {
-                        toast.success(`Login successful! Welcome, ${name || "User"}!`);
+                        toast.success(`Welcome ${name || "User"} Login successful!`);
                         setTimeout(() => {
                             navigate("/home");
                         }, 1500);
                     }
                     else {
-                        toast.error("Registration successful! Please check your email to verify your account.")
+                        toast.error(`${name || "User"} Please check your email to verify your account.`)
                     }
 
                 })
@@ -154,7 +154,7 @@ const Login = () => {
                     </div>
                     <span className="w-1/5 border-b dark:border-gray-400 lg:w-1/4" />
                 </div>
-                <div className="mt-4">
+                <div className="mt-4 ">
                     <label
                         className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
                         htmlFor="LoggingEmailAddress"
@@ -165,6 +165,7 @@ const Login = () => {
                         id="LoggingEmailAddress"
                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
                         type="email"
+                        placeholder="user@example.com"
                     />
                 </div>
                 <div className="mt-4">
@@ -186,6 +187,7 @@ const Login = () => {
                         id="loggingPassword"
                         className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
                         type="password"
+                        placeholder="Minimum 8 chars, A-Z, a-z, 0-9, @#$%"
                     />
                 </div>
                 <div className="mt-6">

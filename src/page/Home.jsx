@@ -1,8 +1,20 @@
+
 import React from 'react'
+import Userlist from '../component/Userlist'
+
 
 const Home = () => {
   return (
-    <div>Atikulla Hasib</div>
+    <div className='grid grid-cols-3 gap-3 '>
+      <Userlist />
+      <Userlist />
+      <Userlist />
+      <Userlist />
+      <Userlist />
+      <Userlist />
+    </div>
+
+
   )
 }
 
