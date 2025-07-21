@@ -12,7 +12,7 @@ const Sidebar = () => {
                         A
                     </div>
                     <div>
-                        <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200">Atikulla Hasib</h2>
+                        <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 whitespace-nowrap">Atikulla Hasib</h2>
                         <p className="text-xs text-green-500">● Online</p>
                     </div>
                 </div>

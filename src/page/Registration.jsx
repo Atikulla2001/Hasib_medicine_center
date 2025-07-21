@@ -97,7 +97,7 @@ const Registration = () => {
                 console.log(user)
                 toast.success('Registration successful!');
                 setTimeout(() => {
-                  navigate("/");
+                  navigate("/login");
                 }, 1000);
 
 

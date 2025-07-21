@@ -1,6 +1,18 @@
 import React from 'react'
 import { AiOutlinePlus } from 'react-icons/ai';
+import { useSelector } from 'react-redux'
+
+
+
+
 const Userlist = () => {
+
+    const data = useSelector((state) => state.userLogin.value)
+
+
+
+
+
     return (
         <>
             <div className="max-w-2xl">
@@ -26,10 +38,10 @@ const Userlist = () => {
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                            Neil Sims
+                                            {data.displayName}
                                         </p>
                                         <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                                            email@windster.com
+                                            {data.email}
                                         </p>
                                     </div>
                                     <button className="p-2 bg-blue-500 text-white rounded-full hover:bg-green-600 cursor-pointer">

@@ -4,6 +4,8 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase.config';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { userLoginInfo } from '../slices/UserSlice';
 
 
 const Login = () => {
@@ -17,6 +19,8 @@ const Login = () => {
     // console.log(userInfo)
 
     const navigate = useNavigate()
+
+    const dispatch = useDispatch()
 
     const handleemail = (e) => {
         setUserInfo((prev) => {
@@ -70,11 +74,14 @@ const Login = () => {
                     const user = userCredential.user;
                     const name = user.displayName;
                     // ...
-                    console.log(user)
+                    // console.log(user)
                     if (user.emailVerified) {
+                        dispatch(userLoginInfo(user))
+                        localStorage.setItem("login", JSON.stringify(user))
+                        // data save rakhar jonno //
                         toast.success(`Welcome ${name || "User"} Login successful!`);
                         setTimeout(() => {
-                            navigate("/home");
+                            navigate("/");
                         }, 1500);
                     }
                     else {
