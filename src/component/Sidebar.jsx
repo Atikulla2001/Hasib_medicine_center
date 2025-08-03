@@ -1,7 +1,48 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 import { LogOut, User, Users, MessageCircle, Settings, PlusCircle } from 'lucide-react';
+import { userLoginInfo } from '../slices/UserSlice';
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router';
 
 const Sidebar = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const auth = getAuth()
+
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+
+            console.log(user)
+            if (user) {
+                dispatch(userLoginInfo({
+                    name: user.displayName,
+                    email: user.email,
+                    uid: user.uid,
+                }))
+            } else {
+                dispatch(userLoginInfo(null))
+            }
+        });
+    }, [dispatch])
+
+
+
+
+    const handlelogout = () => {
+        signOut(auth).then(() => {
+            navigate("/login")
+        }).catch((error) => {
+            alert(error)
+        });
+
+    }
+
+
+
+
+
     return (
         <>
             <div className=" bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 p-4 flex flex-col">
@@ -50,7 +91,8 @@ const Sidebar = () => {
                     <button className="flex items-center w-full px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
                         <Settings size={18} className="mr-2" /> Settings
                     </button>
-                    <button className="flex items-center w-full px-3 py-2 text-red-500 hover:bg-red-100 dark:hover:bg-red-900 rounded-lg">
+                    <button onClick={handlelogout}
+                        className="flex items-center w-full px-3 py-2 text-red-500 hover:bg-red-100 dark:hover:bg-red-900 rounded-lg">
                         <LogOut size={18} className="mr-2" /> Logout
                     </button>
                 </div>

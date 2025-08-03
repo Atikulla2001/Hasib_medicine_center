@@ -34,7 +34,7 @@ const router = createBrowserRouter([
       //   Component: Message,
       // },
       {
-        path: "/page_not_found",
+        path: "*",
         Component: Page_not_found,
       },
 

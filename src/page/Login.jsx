@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router'
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from '../firebase.config';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router';
@@ -8,7 +8,10 @@ import { useDispatch } from 'react-redux';
 import { userLoginInfo } from '../slices/UserSlice';
 
 
+
 const Login = () => {
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
 
     const [userInfo, setUserInfo] = useState({
         Username: "",
@@ -77,8 +80,11 @@ const Login = () => {
                     // console.log(user)
                     if (user.emailVerified) {
                         dispatch(userLoginInfo(user))
-                        localStorage.setItem("login", JSON.stringify(user))
+
+
+                        // localStorage.setItem("login", JSON.stringify(user))
                         // data save rakhar jonno //
+
                         toast.success(`Welcome ${name || "User"} Login successful!`);
                         setTimeout(() => {
                             navigate("/");
@@ -109,6 +115,27 @@ const Login = () => {
 
 
     // button function end // 
+
+
+    // google login  //
+
+
+
+    const handlegoogle = () => {
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                const user = result.user;
+                dispatch(userLoginInfo(user))
+                navigate("/");
+                console.log(user)
+
+            }).catch((error) => {
+                const errorCode = error.code;
+                console.log(errorCode)
+            });
+    }
+
+    // google login end //
 
 
 
@@ -147,11 +174,12 @@ const Login = () => {
                             />
                         </svg>
                     </div>
-                    <span className="w-5/6 px-4 py-3 font-bold text-center">
+                    <button onClick={handlegoogle}
+                        className="w-5/6 px-4 py-3 font-bold text-center">
                         Sign in with Google
-                    </span>
+                    </button>
                 </a>
-                <div className="flex items-center justify-between mt-4">
+                {/* <div className="flex items-center justify-between mt-4">
                     <span className="w-1/5 border-b dark:border-gray-600 lg:w-1/4" />
                     <div
                         href="#"
@@ -160,7 +188,7 @@ const Login = () => {
                         or login with email
                     </div>
                     <span className="w-1/5 border-b dark:border-gray-400 lg:w-1/4" />
-                </div>
+                </div> */}
                 <div className="mt-4 ">
                     <label
                         className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"

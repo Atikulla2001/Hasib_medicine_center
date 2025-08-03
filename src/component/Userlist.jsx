@@ -19,7 +19,7 @@ const Userlist = () => {
                 <div className="p-4 max-w-md bg-white rounded-lg border border-gray-500 m-1">
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white font-Poppins">
-                            User List
+                            {/* {data.displayName} */}
                         </h3>
                     </div>
                     <div className="flow-root">
@@ -41,7 +41,7 @@ const Userlist = () => {
                                             {data.displayName}
                                         </p>
                                         <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                                            {data.email}
+                                            {/* {data.email} */}
                                         </p>
                                     </div>
                                     <button className="p-2 bg-blue-500 text-white rounded-full hover:bg-green-600 cursor-pointer">
