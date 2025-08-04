@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { app, auth } from '../firebase.config';
 import { useNavigate } from 'react-router';
+import { getDatabase, ref, set } from "firebase/database";
 
 const Registration = () => {
 
@@ -17,6 +18,7 @@ const Registration = () => {
 
 
 
+  const db = getDatabase();
   const navigate = useNavigate()
 
 
@@ -94,11 +96,19 @@ const Registration = () => {
 
               }).then(() => {
                 const user = userCredential.user;
-                console.log(user)
-                toast.success('Registration successful!');
-                setTimeout(() => {
-                  navigate("/login");
-                }, 1000);
+                // console.log(user)
+                set(ref(db, "userlist/" + user.uid), {
+                  name: user.displayName,
+                  email: user.email,
+                }).then(() => {
+                  toast.success('Registration successful!');
+                  setTimeout(() => {
+                    navigate("/login");
+                  }, 1000);
+                }).catch((error) => {
+                  console.log(error)
+                })
+
 
 
               }).catch((error) => {
