@@ -4,12 +4,15 @@ import { LogOut, User, Users, MessageCircle, Settings, PlusCircle } from 'lucide
 import { userLoginInfo } from '../slices/UserSlice';
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
 
 const Sidebar = () => {
+    const user = useSelector((state) => state.userLogin.value)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const auth = getAuth()
 
+    console.log(auth.currentUser)
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -48,15 +51,48 @@ const Sidebar = () => {
             <div className=" bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 p-4 flex flex-col">
 
                 {/* Profile Section */}
-                <div className="flex items-center space-x-3 mb-6">
+
+                {user ? (
+                    <div className="flex items-center space-x-3 mb-6">
+                        <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+                            {user.name?.charAt(0)}
+                        </div>
+                        <div>
+                            <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 whitespace-nowrap">
+                                {user.name}
+                            </h2>
+                            <p className="text-xs text-green-500">● Online</p>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="flex items-center space-x-3 mb-6">
+                        <div className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold">
+                            ?
+                        </div>
+                        <div>
+                            <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 whitespace-nowrap">
+                                Loading...
+                            </h2>
+                            <p className="text-xs text-gray-500">Authenticating</p>
+                        </div>
+                    </div>
+                )}
+
+
+
+
+
+                {/* problem  */}
+
+                {/* <div className="flex items-center space-x-3 mb-6">
                     <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
                         A
                     </div>
                     <div>
-                        <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 whitespace-nowrap">Atikulla Hasib</h2>
+                        <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 whitespace-nowrap">{user?.name || "Guest"}</h2>
                         <p className="text-xs text-green-500">● Online</p>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Search Bar */}
                 {/* <div className="mb-4">

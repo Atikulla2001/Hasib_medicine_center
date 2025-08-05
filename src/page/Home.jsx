@@ -52,7 +52,11 @@ const Home = () => {
 
       <div className='grid grid-cols-3 gap-3 '>
         {/* <h2>{data.displayName}</h2> */}
-        {/* <Userlist /> */}
+        <Userlist />
+
+
+
+        
         {/* <Userlist />
         <Userlist />
         <Userlist />

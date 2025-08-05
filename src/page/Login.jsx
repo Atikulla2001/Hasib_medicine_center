@@ -6,12 +6,12 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { userLoginInfo } from '../slices/UserSlice';
+import { getDatabase, ref, set } from "firebase/database";
 
 
 
 const Login = () => {
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
+
 
     const [userInfo, setUserInfo] = useState({
         Username: "",
@@ -21,9 +21,14 @@ const Login = () => {
 
     // console.log(userInfo)
 
+    const db = getDatabase();
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
     const navigate = useNavigate()
-
     const dispatch = useDispatch()
+
+
+
 
     const handleemail = (e) => {
         setUserInfo((prev) => {
@@ -125,9 +130,25 @@ const Login = () => {
         signInWithPopup(auth, provider)
             .then((result) => {
                 const user = result.user;
-                dispatch(userLoginInfo(user))
-                navigate("/");
-                console.log(user)
+
+
+                set(ref(db, "userlist/" + user.uid), {
+                    name: user.displayName,
+                    email: user.email
+                }).then(() => {
+                    dispatch(userLoginInfo(user))
+                    navigate("/");
+                    console.log(user)
+                }).catch((error) => {
+                    console.log(error)
+                })
+
+
+
+
+
+
+
 
             }).catch((error) => {
                 const errorCode = error.code;
