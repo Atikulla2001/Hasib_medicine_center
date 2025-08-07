@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 // data niye asar jonno useSelector call korte hobe //
 
 import { useSelector } from 'react-redux'
+import FriendRequestlist from '../component/FriendRequestlist'
 
 // data pathanor jonno dispatch call call korte hobe //
 
@@ -37,7 +38,7 @@ const Home = () => {
   // console.log(auth)
 
   const data = useSelector((state) => state.userLogin.value)
-  console.log(data)
+  // console.log(data)
 
 
 
@@ -51,17 +52,10 @@ const Home = () => {
 
 
       <div className='grid grid-cols-3 gap-3 '>
-        {/* <h2>{data.displayName}</h2> */}
-        <Userlist />
 
+        <Userlist />
+        <FriendRequestlist />
 
-
-        
-        {/* <Userlist />
-        <Userlist />
-        <Userlist />
-        <Userlist />
-        <Userlist /> */}
       </div>
     </>
 

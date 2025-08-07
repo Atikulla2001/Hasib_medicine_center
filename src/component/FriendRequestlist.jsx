@@ -1,45 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai';
-import { getDatabase, ref, onValue, push, set } from "firebase/database";
+import { getDatabase, ref, onValue } from "firebase/database";
 import { getAuth } from 'firebase/auth';
 
 
 
 
-const Userlist = () => {
-
-    const [userList, setUserList] = useState([]);
+const FriendRequestlist = () => {
+    const [requestList, setRequestList] = useState([]);
     const db = getDatabase();
-    const auth = getAuth()
 
     useEffect(() => {
-        const userlistRef = ref(db, "userlist/");
-        onValue(userlistRef, (snapshot) => {
-            const arry = []
+        const requestlistRef = ref(db, "friendrequestlist/");
+        onValue(requestlistRef, (snapshot) => {
+            const arry = [];
             snapshot.forEach((item) => {
-                if (item.key != auth.currentUser.uid) {
-                    arry.push({ ...item.val(), id: item.key })
-                }
+                // let arry = [];
+                arry.push({ id: item.key, ...item.val() });
 
             })
-            setUserList(arry);
+            setRequestList(arry);
         });
 
     }, [])
 
+    console.log(requestList)
 
-    // friend request button //
 
-    const handlefriendrequest = (item) => {
-        set(push(ref(db, "friendrequestlist/")), {
-            sendername: auth.currentUser.displayName,
-            senderid: auth.currentUser.uid,
-            recevername: item.name,
-            receverid: item.id,
-        }).then(() => {
-            console.log("friend request done")
-        })
-    }
+
 
 
 
@@ -51,7 +39,7 @@ const Userlist = () => {
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white font-Orbitron whitespace-nowrap">
                             {/* {data.displayName} */}
-                            User List
+                            Friend Request List
                         </h3>
                     </div>
                     <div className="flow-root">
@@ -60,10 +48,11 @@ const Userlist = () => {
                             className="divide-y divide-gray-200 dark:divide-gray-700 h-[400px] overflow-y-scroll pr-5"
                         >
 
-                            {userList.map((item) => {
+
+                            {requestList.map((item) => {
                                 return (
                                     <li className="py-3 sm:py-4">
-                                        <div className="flex items-start space-x-4">
+                                        <div className="flex items-center space-x-4">
                                             <div className="flex-shrink-0">
                                                 <img
                                                     className="w-8 h-8 rounded-full"
@@ -72,21 +61,19 @@ const Userlist = () => {
                                                 />
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-Orbitron">
-                                                    {item.name}
+                                                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                    {item.sendername}
                                                 </p>
-                                                <p className="text-sm text-gray-500 whitespace-nowrap dark:text-gray-400 font-Orbitron">
-                                                    {item.email}
+                                                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                    {/* {item.email} */}
                                                 </p>
                                             </div>
-                                            <button onClick={() => handlefriendrequest(item)}
-                                                className="p-2  bg-blue-500 text-white rounded-full hover:bg-green-600 cursor-pointer">
+                                            <button className="p-2 bg-blue-500 text-white rounded-full hover:bg-green-600 cursor-pointer">
                                                 <AiOutlinePlus className="text-xl" />
                                             </button>
                                         </div>
                                     </li>
                                 )
-
                             })}
 
 
@@ -102,4 +89,4 @@ const Userlist = () => {
     )
 }
 
-export default Userlist
+export default FriendRequestlist

@@ -12,12 +12,12 @@ const Sidebar = () => {
     const dispatch = useDispatch()
     const auth = getAuth()
 
-    console.log(auth.currentUser)
+    // console.log(auth.currentUser)
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
 
-            console.log(user)
+            // console.log(user)
             if (user) {
                 dispatch(userLoginInfo({
                     name: user.displayName,

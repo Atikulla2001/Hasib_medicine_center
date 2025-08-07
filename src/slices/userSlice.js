@@ -31,7 +31,7 @@ export const userSlice = createSlice({
     reducers: {
         userLoginInfo: (state, actions) => {
             state.value = actions.payload;
-            console.log(actions.payload)
+            // console.log(actions.payload)
         },
 
     },
